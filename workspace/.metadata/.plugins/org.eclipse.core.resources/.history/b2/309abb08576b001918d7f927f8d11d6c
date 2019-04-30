@@ -1,0 +1,256 @@
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
+
+class HomeTest {
+
+	
+
+	@Test public void basicHouse() {
+		Home home = new House();
+		assertEquals(250000.0, home.cost());
+	}
+	
+	@Test public void basicApartment() {
+		Home home = new Apartment();
+		assertEquals(150000.0, home.cost());
+	}
+	
+	@Test public void basicCondo() {
+		Home home = new Condo();
+		assertEquals(200000.0, home.cost());
+	}
+	
+	@Test public void basicCastle() {
+		Home home = new Castle();
+		assertEquals(10000000.0, home.cost());
+	}
+	
+	@Test public void basicMansion() {
+		Home home = new Mansion();
+		assertEquals(1000000.0, home.cost());
+	}
+	
+	@Test public void basicMobileHouse() {
+		Home home = new MobileHouse();
+		assertEquals(75000.0, home.cost());
+	}
+	
+	@Test public void addSingleBathroomToHouse() {
+		Home home = new House();
+		home = new Bathroom(home,1.0);
+		assertEquals(1500 + 250000.0, home.cost());	
+	}
+	
+	@Test public void addDoubleBathroomToHouse() {
+		Home home = new House();
+		home = new Bathroom(home,2.0);
+		assertEquals(3000 + 250000.0, home.cost());	
+	}
+	
+	@Test public void addDoubleBathroomToApartment() {
+		Home home = new Apartment();
+		home = new Bathroom(home,2.0);
+		assertEquals(6000 + 150000.0 , home.cost());	
+	}
+	
+	@Test
+	public void addAcreageToUrbanHouse() {
+		Home home = new House();
+		home = new Acreage(home, 1.0);
+		assertEquals(50.0 + (250000.0*1.5), home.cost());
+	}
+	
+	@Test
+	public void addAcreageToSuburbanHouse() {
+		Home home = new House();
+		home.setLocation(Home.Location.SUBURBAN);
+		home = new Acreage(home, 1.0);
+		assertEquals(50.0 + (250000.0*1.0), home.cost());
+	}
+	
+	@Test
+	public void addAcreageToRuralHouse() {
+		Home home = new House();
+		home.setLocation(Home.Location.RURAL);
+		home = new Acreage(home, 1.0);
+		assertEquals(50.0 + (250000*.9), home.cost());
+	}
+	
+	@Test
+	public void addBedroomToHouse() {
+		Home home = new House();
+		home = new Bedroom(home,1);
+		assertEquals(3000 + 250000.0, home.cost());	
+	}
+
+	@Test
+	public void addTwoBedroomsToHouse() {
+		Home home = new House();
+		home = new Bedroom(home,2);
+		assertEquals(6000 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addCentralACToHouse() {
+		Home home = new House();
+		home = new CentralAC(home);
+		assertEquals(1200 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addFirePitToHouse() {
+		Home home = new House();
+		home = new FirePit(home,1);
+		assertEquals(700 + 250000.0, home.cost());	
+	}
+
+	@Test
+	public void addTwoFirePitsToHouse() {
+		Home home = new House();
+		home = new FirePit(home,2);
+		assertEquals(1400 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addGarageToHouse() {
+		Home home = new House();
+		home = new Garage(home,1);
+		assertEquals(5000 + 250000.0, home.cost());	
+	}
+
+	@Test
+	public void addTwoGaragesToHouse() {
+		Home home = new House();
+		home = new Garage(home,2);
+		assertEquals(10000 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addGatedCommunityToHouse() {
+		Home home = new House();
+		home = new GatedCommunity(home);
+		assertEquals(1000 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addTwoGolfCourseToHouse() {
+		Home home = new House();
+		home = new GolfCourse(home);
+		assertEquals(2500 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addHardwoodFloorToHouse() {
+		Home home = new House();
+		home = new HardwoodFloor(home);
+		assertEquals(500 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addHistoricToHouse() {
+		Home home = new House();
+		home = new Historic(home);
+		assertEquals(2500 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addJacuzziToHouse() {
+		Home home = new House();
+		home = new Jacuzzi(home);
+		assertEquals(450 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addSchoolDistrictToHouse() {
+		Home home = new House();
+		home.setSchoolDistrict(Home.SchoolDistrict.A);
+		home=new SchoolDistrict(home);
+		assertEquals(10000 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addSqftToHouse() {
+		Home home = new House();
+		home = new Sqft(home,1);
+		assertEquals(100 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void addPoolToHouse() {
+		Home home = new House();
+		home = new SwimmingPool(home);
+		assertEquals(200 + 250000.0, home.cost());	
+	}
+	
+	@Test
+	public void exampleHouse() {
+		Home home = new House();
+		home.setSchoolDistrict(Home.SchoolDistrict.C);
+		home.setLocation(Home.Location.RURAL);
+		home = new Acreage(home,100);
+		home = new Bathroom(home,2.5);
+		home = new Bedroom(home,1);
+		home = new CentralAC(home);
+		home = new FirePit(home,7);
+		home = new Garage(home,2);
+		home = new GatedCommunity(home);
+		home = new GolfCourse(home);
+		home = new HardwoodFloor(home);
+		home = new Historic(home);
+		home = new Jacuzzi(home);
+		home = new SchoolDistrict(home);
+		home = new SwimmingPool(home);
+		home = new Sqft(home,1000);
+		home.getDescription();
+		assertEquals(370000.0,home.cost());		 
+	}
+	
+	@Test
+	public void exampleApartment() {
+		Home home = new Apartment();
+		home.setSchoolDistrict(Home.SchoolDistrict.C);
+		home.setLocation(Home.Location.RURAL);
+		home = new Acreage(home,100);
+		home = new Bathroom(home,2.5);
+		home = new Bedroom(home,1);
+		home = new CentralAC(home);
+		home = new FirePit(home,7);
+		home = new Garage(home,2);
+		home = new GatedCommunity(home);
+		home = new GolfCourse(home);
+		home = new HardwoodFloor(home);
+		home = new Historic(home);
+		home = new Jacuzzi(home);
+		home = new SchoolDistrict(home);
+		home = new SwimmingPool(home);
+		home = new Sqft(home,1000);
+		home.getDescription();
+		assertEquals(310250.0,home.cost());		 
+	}
+	
+	@Test
+	public void exampleCastle() {
+		Home home = new Castle();
+		home.setSchoolDistrict(Home.SchoolDistrict.C);
+		home.setLocation(Home.Location.RURAL);
+		home = new Acreage(home,100);
+		home = new Bathroom(home,2.5);
+		home = new Bedroom(home,1);
+		home = new CentralAC(home);
+		home = new FirePit(home,7);
+		home = new Garage(home,2);
+		home = new GatedCommunity(home);
+		home = new GolfCourse(home);
+		home = new HardwoodFloor(home);
+		home = new Historic(home);
+		home = new Jacuzzi(home);
+		home = new SchoolDistrict(home);
+		home = new SwimmingPool(home);
+		home = new Sqft(home,1000);
+		home.getDescription();
+		assertEquals(9241800.0,home.cost());		 
+	}
+	
+}

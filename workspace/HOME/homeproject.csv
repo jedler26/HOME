@@ -1,0 +1,15 @@
+﻿Type,Price,Location,SqFt,Acreage,Bedrooms,Bathroom,Garage,SchoolDistrict,Fire Pit,Hardwood Floors,Historic,Jacuzzi,Pool,Golf Course,Gated,Address
+House,200000,Urban,2000,0.5,2,2,1,A,1,Yes,Yes,Yes,No,No,No,4117 Tesson St
+Apartment,1000000,Suburban,900,0.5,1,1,0,C,0,No,No,No,Yes,No,No,123 Sesame Street
+Condo,1500000,Rural,1200,10,2,1,2,B,1,Yes,No,No,No,Yes,No,6800 Wydown Ave
+Mobile House,75000,Urban,750,0.1,1,1,0,A,1,No,Yes,No,No,No,Yes,20785 Schultes Avenue
+Mansion,400000,Rural,8000,10,4,3,3,A,2,Yes,No,No,Yes,Yes,Yes,456 Big Bend Blvd
+Castle,1000000,Rural,20000,500,6,7,4,A,7,No,Yes,No,No,No,Yes,Westminster London SW1A 1AA UK
+House,200000,Urban,2000,1.5,3,1,6,B,1,Yes,No,No,No,No,No,19682 Old Jamestown Rd
+Condo,680000,Suburban,5000,3,5,3,2,A,1,Yes,No,Yes,Yes,Yes,Yes,1304 Test Drive
+Apartment,80000,Rural,1000,0,1,1,0,F,0,No,No,No,No,No,No,420 Dont Live Here Drive
+Mobile House,80000,Rural,1500,0.2,3,1,0,D,0,No,No,No,No,No,No,1 Griffin Drive
+House,245000,Rural,5000,2,4,2,4,B,1,No,No,No,No,No,No,24570 Chiefs Court
+House,300000,Suburban,3000,1.5,2,1,2,C,0,Yes,Yes,No,No,Yes,No,123 Example Street
+House,400000,Urban,1500,0,2,2,2,C,0,Yes,Yes,No,No,No,Yes,987 Fontbonne Blvd
+Apartment,150000,Urban,900,0,2,1,2,F,0,No,Yes,No,No,No,No,8341 Delcrest Drive

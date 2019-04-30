@@ -1,0 +1,289 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
+public class DealFinder {
+	public static ArrayList<Home> homeList = new ArrayList<Home>();
+	static ArrayList<Deal> priceDif = new ArrayList<Deal>();
+	public DealFinder() {
+		
+		System.out.println("Welcome H.O.M.E\n");
+		String filename = "C:\\Users\\jared\\Desktop\\H.O.M.E\\workspace\\HOMEsear\\homeproject.csv";
+		
+		try 
+		{  
+	        BufferedReader csvReader = readFile(filename); 
+	        //printList(priceDif);
+	        addToDifferenceList(priceDif);
+	        Collections.sort(priceDif, Comparator.comparing(Deal :: getDifference));
+	        printDeals(priceDif); 
+	        csvReader.close();
+	    }
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		while(true) {
+			filterList();
+		}
+	}
+	
+	
+	private static BufferedReader readFile(String filename) throws FileNotFoundException, IOException {
+		BufferedReader csvReader = new BufferedReader(new FileReader(filename));  
+		String line; 
+		String [] split;
+		// we are going to read data line by line 
+		while ((line = csvReader.readLine()) != null) { 
+				createHome(line);       
+		}
+		return csvReader;
+	}
+
+	private static void printDeals(ArrayList<Deal> priceDif) {
+		int count = 1;
+		System.out.println(count++ + "\nBest Deal = " + priceDif.get(0).getHome().getDescription() + "\n" +
+				"\tSelling Price: $" + priceDif.get(0).getHome().getTrueCost() + "\n\tThe property should be: $" + priceDif.get(0).getHome().cost() +
+				"\n" + "\tYou saved: $" + priceDif.get(0).getDifference() * -1);
+		System.out.println(rateDeal(priceDif.get(0).getDifference() * -1, priceDif.get(0).getHome().cost()));
+
+		System.out.println("\n");
+		
+		for(int i = 1; i< priceDif.size(); i++){
+			System.out.println(count++ + "\n" + priceDif.get(i).getHome().getDescription() + "\n" +
+				"\tSelling Price: $" + priceDif.get(i).getHome().getTrueCost() + "\n\tThe property should be: $" + priceDif.get(i).getHome().cost() + 
+				"\n" + "\tPrice Difference: $" + priceDif.get(i).getDifference() * -1);
+			System.out.println(rateDeal(priceDif.get(i).getDifference() * -1, priceDif.get(i).getHome().cost()));
+			System.out.println();
+		}
+	}
+
+	private static String rateDeal(double deal, double cost) {
+		double rating = deal / cost;
+
+		if(rating >= 0.2) {
+			return "H.O.M.E. deal rating: Excellent Deal!";
+		}
+		else if(rating >= 0.1 && rating <= 0.19) {
+			return "H.O.M.E. deal rating: Good Deal!";
+		}
+		else if(rating >= 0 && rating <= 0.09) {
+			return "H.O.M.E. deal rating: Fair Deal!";
+		}
+		else if(rating < 0) {
+			return "H.O.M.E. deal rating: Bad Deal!";
+		}
+		return "";
+	}
+	
+	/*
+	private static void printList(ArrayList<Deal> priceDif) {
+		for(int i = 0; i< homeList.size();i++){
+			System.out.println(homeList.get(i).getDescription() + " - $" + homeList.get(i).cost());
+			System.out.println("$"+ homeList.get(i).getTrueCost() + "-----------" + "$"+ homeList.get(i).cost());
+			System.out.println();
+		}
+	}
+	*/
+
+
+	private static void addToDifferenceList(ArrayList<Deal> priceDif) {
+		for(int i =0; i<homeList.size(); i++) {
+			priceDif.add(new Deal(homeList.get(i), homeList.get(i).getTrueCost() - homeList.get(i).cost()));
+		}	
+	}
+
+	private static void createHome(String line) {
+		String[] split;
+		split = line.split(",");
+		if(split[0].equals("House")){
+			Home home = new House();
+			createProperty(home, split);
+			//System.out.println(home.getDescription() + " - $" + home.cost());
+		} else if(split[0].equals("Apartment")){
+			Home home = new Apartment();
+			createProperty(home, split);
+			//System.out.println(home.getDescription() + " - $" + home.cost());
+		} else if(split[0].equals("Mobile House")){
+			Home home = new MobileHouse();
+			createProperty(home, split);
+			//System.out.println(home.getDescription() + " - $" + home.cost());
+		} else if(split[0].equals("Mansion")){
+			Home home = new Mansion();
+			createProperty(home, split);
+			//System.out.println(home.getDescription() + " - $" + home.cost());
+		} else if(split[0].equals("Castle")){
+			Home home = new Castle();
+			createProperty(home, split);
+			//System.out.println(home.getDescription() + " - $" + home.cost());
+		} else if(split[0].equals("Condo")){
+			Home home = new Condo();
+			createProperty(home, split);
+			//System.out.println(home.getDescription() + " - $" + home.cost());
+		}
+	}
+
+	private static void createProperty(Home home, String[] split) {
+		home = new Sqft(home, Integer.parseInt(split[3]));
+		home = new Garage(home, Integer.parseInt(split[7]));
+		if (split[11].equals("Yes"))
+			home = new Historic(home);
+		if (split[14].equals("Yes"))
+			home = new GolfCourse(home);
+		home = new Bedroom(home, Integer.parseInt(split[5]));
+		home = new Bathroom(home, Double.parseDouble(split[6]));
+		home.setLocation(Home.Location.URBAN);
+		home = new Acreage(home, Double.parseDouble(split[4]));
+		home.setSchoolDistrict(Home.SchoolDistrict.A);
+		home = new SchoolDistrict(home);
+		home = new FirePit(home, Integer.parseInt(split[9]));
+		if (split[10].equals("Yes")) {
+			home = new HardwoodFloor(home);
+		}
+		home.setTrueCost(Double.parseDouble(split[1]));
+		homeList.add(home);
+
+	}
+	
+	private static void filterList() {
+		
+		
+		
+		Scanner keyboard = new Scanner(System.in);
+	
+		String str = "";
+		
+		//str = str.toLowerCase();
+		while(str.equals("")) {
+			
+			System.out.println("Do you want to SEARCH or SAVE a home? (-1 to exit)");
+			str = keyboard.nextLine();
+			
+			if(str.equals("search")) {
+				searchHomes(keyboard);
+				str = "";
+				//call search function
+				
+				
+				
+			} else if (str.equals("save")) {
+				saveHomes(keyboard);
+				str = "";
+				//call save function
+				
+				
+				
+			}
+			else if(str.equals("-1")){
+				System.out.println("Exiting H.O.M.E");
+				keyboard.close();
+				System.exit(0);
+			}
+			else if(!str.equals("search") || !str.equals("save")) {
+				System.out.println("Please enter a valid choce");
+			}
+		}
+		
+		
+		
+	}
+	
+	public static void saveHomes(Scanner keyboard) {
+		System.out.println("Please enter the numeric ID associated with the home you'd like to save: ");
+		//Scanner keyboard = new Scanner(System.in);
+		String saveIndexString = keyboard.nextLine();
+		
+		int saveIndex = Integer.parseInt(saveIndexString);
+		saveIndex -= 1;
+		//keyboard.nextLine();
+		//System.out.println("line 201");
+		try{
+			
+			PrintWriter writer = new PrintWriter("savedHomes.txt");
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
+			writer.println("Property saved at " + dtf.format(now) + "\n" + priceDif.get(saveIndex).getHome().getDescription() + "\n" +
+					"\tSelling Price: $" + priceDif.get(saveIndex).getHome().getTrueCost() + "\n\tThe property should be: $" + priceDif.get(0).getHome().cost() +
+					"\n" + "\tYou saved: $" + priceDif.get(saveIndex).getDifference() * -1);
+			writer.println(rateDeal(priceDif.get(saveIndex).getDifference() * -1, priceDif.get(saveIndex).getHome().cost())+"\n");
+			writer.close();
+			System.out.println("Home saved!");
+		}
+		
+		catch(FileNotFoundException e) {
+			System.out.println("File not found?");
+		}
+		
+		//keyboard.close();
+	}
+	
+	public static void searchHomes(Scanner keyboard) {
+		String filter = getHomeTypeFilter(keyboard);
+		if(!filter.equals("All homes")) {
+			priceDif = new ArrayList<Deal>();
+			for(int i =0; i<homeList.size(); i++) {
+				String[] splitter = homeList.get(i).getDescription().split(",");
+				if(splitter[0].trim().equals(filter)) {
+					Deal d = new Deal(homeList.get(i), homeList.get(i).getTrueCost() - homeList.get(i).cost());
+					priceDif.add(d);
+				}
+			}
+			
+			Collections.sort(priceDif, Comparator.comparing(Deal :: getDifference));
+	        printDeals(priceDif);	
+		}
+		else {
+			addToDifferenceList(priceDif);
+			Collections.sort(priceDif, Comparator.comparing(Deal :: getDifference));
+	        printDeals(priceDif);
+			
+		}
+	}
+	
+	private static String getHomeTypeFilter(Scanner keyboard) {
+		//Scanner keyboard = new Scanner(System.in);
+		
+		
+		System.out.println("Do you want to search for:\nHouse\n"
+				+ "Apartment"
+				+ "\nCondo"
+				+ "\nMobile House"
+				+ "\nMansion"
+				+ "\nCastle"
+				+ "\nAll homes"
+				+ "\nPlease select the home of your choice (-1 to exit)");
+		String choice ="";
+		while(choice.equals("")) {
+			choice = keyboard.nextLine();
+			if(choice.equals("-1")) {
+				System.out.println("Exiting H.O.M.E");
+				System.exit(0);
+			}
+			else if(!(choice.equals("House")||choice.equals("Apartment")||
+					choice.equals("Condo")||choice.equals("Mobile House")||
+					choice.equals("Mansion")||choice.equals("Castle")||choice.equals("All homes"))){
+				System.out.println("Please enter a valid choice");
+				choice = "";
+			}
+		}
+		//keyboard.close();
+		return choice;
+	}
+	
+
+	
+	
+	
+	
+	
+
+}
