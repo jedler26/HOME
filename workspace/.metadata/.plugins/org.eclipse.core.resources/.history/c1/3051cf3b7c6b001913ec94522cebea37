@@ -248,7 +248,7 @@ class HomeTest {
 		home = new SwimmingPool(home);
 		home = new Sqft(home,1000);
 		home.getDescription();
-		assertEquals(331800.0,home.cost());		 
+		assertEquals(9241800.0,home.cost());		 
 	}
 	
 }

@@ -22,7 +22,7 @@ class HomeTest {
 	
 	@Test public void basicCastle() {
 		Home home = new Castle();
-		assertEquals(100000.0, home.cost());
+		assertEquals(10000000.0, home.cost());
 	}
 	
 	@Test public void basicMansion() {
@@ -248,7 +248,7 @@ class HomeTest {
 		home = new SwimmingPool(home);
 		home = new Sqft(home,1000);
 		home.getDescription();
-		assertEquals(331800.0,home.cost());		 
+		assertEquals(9241800.0,home.cost());		 
 	}
 	
 }
